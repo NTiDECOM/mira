@@ -10,6 +10,7 @@ namespace App\Http\Controllers;
 
 
 use App\User;
+use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
@@ -28,8 +29,16 @@ class UserController extends Controller
         return view('users.create');
     }
 
-    public function store() {
-        
+    public function store(Request $request) {
+
+        $user = new User();
+        $user->name = $request->input('name');
+        $user->email = $request->input('email');
+        $user->password = $request->input('password');
+
+        $user->save();
+
+        return redirect('/usuarios')->with('success', 'Usuário cadastrado com sucesso!');
     }
 
 }

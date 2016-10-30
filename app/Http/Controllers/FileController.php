@@ -9,6 +9,12 @@ use App\Http\Requests;
 
 class FileController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -66,11 +72,11 @@ class FileController extends Controller
                 $file->save();
                 return back()->withInput()->with("success", "Arquivo salvo com sucesso!");
             } else {
-                return back()->withInput()->with("success", "Arquivo inválido!");
+                return back()->withInput()->with("danger", "Arquivo inválido!");
             }
 
         } else {
-            return back()->withInput()->with("success", "Nenhum arquivo enviado!");
+            return back()->withInput()->with("danger", "Nenhum arquivo enviado!");
         }
     }
 
@@ -93,7 +99,8 @@ class FileController extends Controller
      */
     public function edit($id)
     {
-        //
+        $file = File::find($id);
+        return view('files.edit', ['file' => $file]);
     }
 
     /**
@@ -105,7 +112,31 @@ class FileController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $fileToStore = $request->file('media');
+        $file = File::find($id);
+
+        if ($request->hasFile('media')) {
+            if ($request->file('media')->isValid()) {
+                $storedName = strtotime("now");
+                $path = $fileToStore->storeAs('arquivos', $storedName);
+                $file->path = $path;
+                $file->stored_name = $storedName;
+                $file->file_type = $request->media->extension();
+                $file->name = $fileToStore->getClientOriginalName();
+            } else {
+                return back()->withInput()->with("danger", "Arquivo inválido!");
+            }
+        }
+
+        $file->title = $request->input('title');
+        $file->author = $request->input('author');
+        $file->type = $request->input('type');
+
+        $file->save();
+        return back()->withInput()->with("success", "Arquivo atualizado com sucesso!");
+
+
+
     }
 
     /**

@@ -40,7 +40,10 @@
                                     <td>{{ $file->title }}</td>
                                     <td>{{ $file->author }}</td>
                                     <td>{{ \Carbon\Carbon::parse($file->created_at)->format("d/m/Y h:i:s a") }}</td>
-                                    <td><a href="{{ url('/download') . '/' . $file->stored_name . '/' . $file->name }}">Download</a></td>
+                                    <td>
+                                        <a href="{{ url('/download') . '/' . $file->stored_name . '/' . $file->name }}">Download</a> |
+                                        <a href="{{ url('/arquivos') . '/' . $file->id . '/edit'}}">Editar</a>
+                                    </td>
                                 </tr>
                                 @endforeach
                             </tbody>

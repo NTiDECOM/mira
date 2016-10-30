@@ -9,13 +9,13 @@
             <li class="nav-heading ">
                <span data-localize="sidebar.heading.HEADER">Menu Navigation</span>
             </li>
-            <li class=" active">
+            <li class="{{ (Request::is('usuarios') ? 'active' : '') }}">
                <a href="{{action('UserController@index')}}" title="Usuários">
                   <em class="fa fa-users"></em>
                   <span data-localize="sidebar.nav.SINGLEVIEW">Usuários</span>
                </a>
             </li>
-            <li class=" active">
+            <li class="{{ (Request::is('arquivos') ? 'active' : '') }}">
                <a href="{{action('FileController@index')}}" title="Arquivos">
                   <em class="fa fa-file"></em>
                   <span data-localize="sidebar.nav.SINGLEVIEW">Arquivos</span>
