@@ -15,6 +15,33 @@ class FileController extends Controller
         $this->middleware('auth');
     }
 
+    public function search(Request $request) {
+        $files = null;
+        if ($request->input('title')) {
+            $files = File::where('title', 'like', $request->input('title') . '%');
+        }
+        if ($request->input('autor')) {
+            if ($files == null) {
+                $files = File::where('author', 'like', $request->input('autor') . '%');
+            } else {
+                $files->where('author', 'like', $request->input('autor') . '%');
+            }
+        }
+        if ($request->input('type') && $request->input('type') != "blank") {
+            if ($files == null) {
+                $files = File::where('type', $request->input('type'));
+            } else {
+                $files->where('type', $request->input('type'));
+            }
+        }
+        if ($files != null) {
+            $files = $files->get();
+        } else {
+            $files = File::all();
+        }
+        return view('files.search', ['files' => $files]);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -147,6 +174,8 @@ class FileController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $file = File::find($id);
+        $file->delete();
+        return back()->with('success', "Arquivo removido com sucesso!");
     }
 }

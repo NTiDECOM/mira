@@ -19,6 +19,8 @@ Route::resource('usuarios', 'UserController');
 
 Route::resource('arquivos', 'FileController');
 
+Route::get('/busca', 'FileController@search');
+
 Route::get('download/{filename}/{name}', function($filename, $name)
 {
     // Check if file exists in app/storage/file folder

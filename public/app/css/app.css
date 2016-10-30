@@ -90,6 +90,10 @@
 
 @import url("/app/css/theme-i.css");
 
+.action-column > form {
+  display: inline;
+}
+
 .btn-primary {
   background-color: #805815;
 }

@@ -30,7 +30,7 @@
                                     <th>Título</th>
                                     <th>Autor</th>
                                     <th>Data Registro</th>
-                                    <th>Link</th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -40,9 +40,15 @@
                                     <td>{{ $file->title }}</td>
                                     <td>{{ $file->author }}</td>
                                     <td>{{ \Carbon\Carbon::parse($file->created_at)->format("d/m/Y h:i:s a") }}</td>
-                                    <td>
-                                        <a href="{{ url('/download') . '/' . $file->stored_name . '/' . $file->name }}">Download</a> |
-                                        <a href="{{ url('/arquivos') . '/' . $file->id . '/edit'}}">Editar</a>
+                                    <td class="action-column">
+                                        <a href="{{ url('/download') . '/' . $file->stored_name . '/' . $file->name }}" class="btn btn-success btn-xs">Download</a>
+                                        <a href="{{ url('/arquivos') . '/' . $file->id . '/edit'}}" class="btn btn-warning btn-xs">Editar</a>
+                                        {!! Form::open([
+                                            'method' => 'DELETE',
+                                            'action' => ['FileController@destroy', $file->id]
+                                        ]) !!}
+                                        {!! Form::submit('Deletar', ['class' => 'btn btn-danger btn-xs']) !!}
+                                        {!! Form::close() !!}
                                     </td>
                                 </tr>
                                 @endforeach
